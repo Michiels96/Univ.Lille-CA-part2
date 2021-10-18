@@ -87,6 +87,8 @@ $ ./main.py connect F G
 7. H stocke la clé publique de D si la signature de celle-ci est vérifiée
 
 > Le chemin passant par H est ignoré par notre algorithme de recherche car, afin d'éviter les boucles et d'avoir le chemin le plus court, nous stockons les utilsateurs par lesquels nous sommes déjà passés.
+
  
-### Etat final
+### Etat final
+.
 ![Schéma d'initialisation](doc/7.png)
