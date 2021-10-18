@@ -1,4 +1,4 @@
-![Schéma du protocole](doc/archi.png)# CA-2021-part2
+# CA-2021-part2
 
 ## Objectif
 
