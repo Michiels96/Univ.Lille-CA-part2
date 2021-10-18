@@ -40,8 +40,6 @@ def verify_signature(user, signature, message):
 def arrange_paths(paths, user):
     """
     """
-    print(paths) # F E D => F G E D
-    
     return  [[path[-1]] + [user] + path[:-1] for path in paths]
 
 
@@ -244,12 +242,29 @@ def exchange_pubkeys(requester, requested, is_direct=False):
 
 
 def main():
-    init("D", "E")
-    add_user("F", "E")
-    add_user("G", "D")
-    exchange_pubkeys("F", "G")
-    add_user("H", "D")
-    exchange_pubkeys("H", "E")
+    if sys.argv[1] == "init":
+        ok = init(sys.argv[2], sys.argv[3])
+        print("+ Réseau social initialisé avec succès") if ok else print("+ Réseau social non initialisé")
+    
+    elif sys.argv[1] == "add":
+        ok = add_user(sys.argv[2], sys.argv[3])
+        print("+ Utilisateur ajouté avec succès") if ok else print("+ Utilisateur non ajouté")
+    
+    elif sys.argv[1] == "connect":
+        ok = exchange_pubkeys(sys.argv[2], sys.argv[3])
+        print("+ Connexion établie avec succès") if ok else print("+ Connexion non étable")
+    
+    elif sys.argv[1] == "clean":
+        ok = clean()
+        print("+ Réseau social supprimé avec succès") if ok else print("+ Réseau social non supprimé")
+    
+        
+    # init("D", "E")
+    # add_user("F", "E")
+    # add_user("G", "D")
+    # exchange_pubkeys("F", "G")
+    # add_user("H", "D")
+    # exchange_pubkeys("H", "E")
 
 
 if __name__ == "__main__":
