@@ -65,19 +65,21 @@ def demandeDAmi(demandeur, demandee):
     ok = process("cp people/"+demandeur+"/listeDAmis/* people/"+demandee+"/listeDAmisAAnalyser/")
     if not ok:
         return False
-
+    tierDeConfiance = ""
     # le demandée vérifie dans sa liste d'amis si il possède une des clés reçues du demandeur
     #print("people/"+demandee+"/listeDAmisAAnalyser/")
     for filename in os.listdir("people/"+demandee+"/listeDAmisAAnalyser/"):
+        tierDeConfiance = filename.replace(".pub", "")
         if filename.endswith(".pub"): 
             #print(filename)
             #ok, _ = process("find people/"+demandee+"/listeDAmis/ -name "+filename)
             ok = os.path.exists("people/"+demandee+"/listeDAmis/"+filename)
+            
             if ok:
                 # à comparer clé pub. et privée depuis l'ami tièr de confiance
                 # ex: G est ami avec E donc depuis E on vérifie la clé pub. reçue par G (qui prétend être celle de E) avec la clé privée de E
                 # générer de nouveau la clé pub. de G dans le fichier 'tmp.pub' pour ensuite comparer le contenu de ce fichier avec la clé pub. reçue par G
-                tierDeConfiance = filename.replace(".pub", "")
+                
                 ok = process("openssl rsa -in people/"+tierDeConfiance+"/"+tierDeConfiance+".rsa -pubout > people/"+tierDeConfiance+"/tmp.pub")
                 if not ok:
                     return False
@@ -92,9 +94,10 @@ def demandeDAmi(demandeur, demandee):
                     return False
 
                 return True
-
+    listeDAppels = []
     # TODO si elle n'est pas présente dans listeDAmis/, on va faire la meme demande aux amis du demandee
-
+    ok = rechercheTierDeConfiance(demandee, tierDeConfiance, demandeur, listeDAppels)
+    print(listeDappels, tierDeConfiance)
 
     # A la fin
     # ok = process("rm -rf people/"+demandee+"/listeDAmisAAnalyser/")
@@ -103,6 +106,15 @@ def demandeDAmi(demandeur, demandee):
     
     
     return True
+
+def rechercheTierDeConfiance(personne, tierDeConfiance, demandeur, listeDAppels):
+    for filename in os.listdir("people/"+personne+"/listeDAmis/"):
+        if filename.endswith(".pub"): 
+            ami = filename.replace(".pub", "")
+            if ami == tierDeConfiance:
+                listeDAppels.append(ami)
+                ok = rechercheTierDeConfiance()
+                return True
 
 def create_new_user(nomUtilisateur, parrain):
     #recoit en paramètre le nom du nouvel utilisateur et le nom du parrain

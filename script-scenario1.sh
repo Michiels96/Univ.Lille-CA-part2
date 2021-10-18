@@ -8,5 +8,5 @@
 echo "scénario 1 mis en place"
 
 # à faire:
-#./main.py newUser F E
+./main.py newUser F E
 #./main.py ami F G
